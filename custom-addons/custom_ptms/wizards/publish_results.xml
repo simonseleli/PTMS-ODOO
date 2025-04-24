@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="coordinator_publish_form">
+            <field name="name">pt.publish.wizard.form</field>
+            <field name="model">pt.publish.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Publish/Unpublish Results">
+                    <field name="company_id" invisible="1"/>
+                    <group>
+                        <field name="academic_year" options='{"no_create": True,"no_open": True}' />
+                    </group>
+                    <group>
+                        <field name="is_publish" />
+                    </group>
+                    <footer>
+                        <button class="oe_highlight" type="object" name="publish_unpublish" string="Save" confirm="Are you sure you wish to Continue?"/>
+                        <button class="oe_highlight" special="cancel" string="Cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_publish_unpublish" model="ir.actions.act_window">
+            <field name="name">Publish/Unpublish Results</field>
+            <field name="res_model">pt.publish.wizard</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="coordinator_publish_form"/>
+             <field name="target">new</field>
+            <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                    Publish/Unpublish Results
+            </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_application_publish" name="Publish/Unpublish" parent="menu_application_coordinator" action="action_publish_unpublish" sequence="6" groups="school.group_school_administration,custom_ptms.department_coordinator"/>
+
+
+    </data>
+</odoo>

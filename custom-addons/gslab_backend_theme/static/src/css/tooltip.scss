@@ -1,0 +1,103 @@
+.tooltip {
+    .tooltip-inner {
+        .oe_tooltip_string {
+            background-color: $o-brand-odoo;
+            color: white;
+            font-weight: bold;
+            padding: 5px;
+        }
+    }
+}
+
+.o_tooltip {
+    $o-tip-color: $o-brand-odoo;
+    $o-tip-border-width: 2px;
+    $o-tip-arrow-length: 10px;
+    border: $o-tip-border-width solid $o-tip-color;
+    background-color: $o-tip-color;
+
+
+    &.right::before {
+        border-right-color: $o-tip-color;
+    }
+
+    &.top::before {
+        border-top-color: $o-tip-color;
+    }
+
+    &.left::before {
+        border-left-color: $o-tip-color;
+    }
+
+    &.bottom::before {
+        border-bottom-color: $o-tip-color;
+    }
+
+    &::after {
+        border-color: $o-tip-color;
+        background: radial-gradient(lighten($o-tip-color, 7%), $o-tip-color);
+    }
+
+    &.active {
+        border-radius: 0;
+        background-color: white;
+
+        &::after {
+            border: 0 solid rgba(0, 0, 0, 0);
+            border-radius: 0;
+        }
+
+        >.o_tooltip_overlay {
+            display: block;
+        }
+
+        >.o_tooltip_content {
+            direction: ltr;
+            visibility: visible;
+        }
+
+        &.right {
+            &::before {
+                left: -$o-tip-arrow-length;
+                border-right-color: $o-tip-color;
+            }
+
+            &::after {
+                border-right-color: white;
+            }
+        }
+
+        &.top {
+            &::before {
+                bottom: -$o-tip-arrow-length;
+                border-top-color: $o-tip-color;
+            }
+
+            &::after {
+                border-top-color: white;
+            }
+        }
+
+        &.left {
+            &::before {
+                right: -$o-tip-arrow-length;
+                border-left-color: $o-tip-color;
+            }
+
+            &::after {
+                border-left-color: white;
+            }
+        }
+
+        &.bottom {
+            &::before {
+                top: -$o-tip-arrow-length;
+                border-bottom-color: $o-tip-color;
+            }
+
+            &::after {
+                border-bottom-color: white;
+            }
+        }
+    }
+}

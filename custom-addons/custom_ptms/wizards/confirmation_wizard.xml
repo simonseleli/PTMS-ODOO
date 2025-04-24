@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="confirm_wizard_form">
+            <field name="name">pt.confirmation.wizard.form</field>
+            <field name="model">pt.confirmation.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Confirm Dialog">
+                    <field name="yes_no" readonly="1" />
+                    <field name="vacancy_id" invisible="1" />
+                    <footer>
+                        <button class="oe_highlight" type="object" name="yes" string="Yes" />
+                        <button class="oe_highlight" special="cancel" string="No" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

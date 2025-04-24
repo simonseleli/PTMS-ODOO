@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+
+        <!-- Group For Limiting Department Coordinators -->
+        <record id="department_coordinator" model="res.groups">
+            <field name="name">Department Administrator</field>
+            <field name="category_id" ref="school.module_category_school"/>
+        </record>
+
+        <!-- Rule For Student Student Department-->
+        <record id="rule_student_student_department" model="ir.rule">
+            <field name="name">Rule Coordinator Student Department</field>
+            <field name="model_id" ref="model_student_student"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('department_id','=',user.employee_id.department_id.id)]</field>
+            <field name="groups" eval="[(4, ref('custom_ptms.department_coordinator'))]"/>
+        </record>
+
+        <!-- Rule For Student Teacher Department-->
+        <!--<record id="rule_school_teacher_department" model="ir.rule">
+            <field name="name">Rule Coordinator Teacher Department</field>
+            <field name="model_id" ref="school.model_school_teacher"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('department_id','=',user.employee_id.department_id.id)]</field>
+            <field name="groups" eval="[(4, ref('custom_ptms.department_coordinator'))]"/>
+        </record>-->
+
+        <!-- Rule For Application Record Company -->
+        <record id="rule_company_application_department" model="ir.rule">
+            <field name="name">Rule Application Company</field>
+            <field name="model_id" ref="model_pt_application"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+            <field name="groups" eval="[(4, ref('school.group_school_administration'))]"/>
+        </record>
+
+        <!-- Rule For Application Department-->
+        <record id="rule_student_application_department" model="ir.rule">
+            <field name="name">Rule Coordinator Application Department</field>
+            <field name="model_id" ref="model_pt_application"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('department_id','=',user.employee_id.department_id.id)]</field>
+            <field name="groups" eval="[(4, ref('custom_ptms.department_coordinator'))]"/>
+        </record>
+
+        <!-- Rule For Student Application -->
+        <record id="rule_student_application_as_student" model="ir.rule">
+            <field name="name">Rule Student Application as A Student</field>
+            <field name="model_id" ref="model_pt_application"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('school.group_school_student'))]"/>
+        </record>
+
+        <!-- Rule For Teacher Application -->
+        <record id="rule_teacher_application_as_teacher" model="ir.rule">
+            <field name="name">Rule Teacher Application as A Teacher</field>
+            <field name="model_id" ref="model_pt_application"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('assignment_user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('school.group_school_teacher'))]"/>
+        </record>
+
+        <!-- Rule For Assignment Record Company -->
+        <record id="rule_company_assignment" model="ir.rule">
+            <field name="name">Rule Assignment Company</field>
+            <field name="model_id" ref="model_pt_supervisor_assignment"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+            <field name="groups" eval="[(4, ref('school.group_school_administration')),(4, ref('custom_ptms.department_coordinator'))]"/>
+        </record>
+
+         <!-- Rule For Vacancy Record Company -->
+        <record id="rule_company_vacancy_company" model="ir.rule">
+            <field name="name">Rule Vacancy Company</field>
+            <field name="model_id" ref="model_pt_company_vacancy"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+            <field name="groups" eval="[(4, ref('school.group_school_administration')),
+            (4, ref('school.group_school_teacher')),(4, ref('school.group_school_student'))]"/>
+        </record>
+
+        <!-- Rule For Vacancy Record Department -->
+        <record id="rule_department_vacancy_company" model="ir.rule">
+            <field name="name">Rule Vacancy Department</field>
+            <field name="model_id" ref="model_pt_company_vacancy"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('department_id','=',user.employee_id.department_id.id)]</field>
+            <field name="groups" eval="[(4, ref('custom_ptms.department_coordinator'))]"/>
+        </record>
+
+        <!-- Rule For Vacancy Record Company As An Administrator -->
+        <record id="rrule_company_vacancy_company_as_admin" model="ir.rule">
+            <field name="name">Rule Vacancy Company As An Administrator</field>
+            <field name="model_id" ref="model_pt_company_vacancy"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force"> ['|','|',('company_id.child_ids','child_of',[user.company_id.id]),('company_id','child_of',[user.company_id.id]),('company_id','=',False)]</field>
+            <field name="groups" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+        <!-- Rule For Student Preference Selection -->
+        <record id="rule_student_preference_as_student" model="ir.rule">
+            <field name="name">Rule Student Location Selection as A Student</field>
+            <field name="model_id" ref="model_pt_location_selection"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('school.group_school_student'))]"/>
+        </record>
+
+        <!-- Rule For Preference Selection Record Company -->
+        <record id="rule_company_preference_selection_company" model="ir.rule">
+            <field name="name">Rule Preference Selection Company</field>
+            <field name="model_id" ref="model_pt_location_selection"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+            <field name="groups" eval="[(4, ref('school.group_school_administration')),(4, ref('school.group_school_teacher'))]"/>
+        </record>
+
+        <!-- Rule For Preference Selection Department-->
+        <record id="rule_department_preference_selection" model="ir.rule">
+            <field name="name">Rule Preference Selection Department</field>
+            <field name="model_id" ref="model_pt_location_selection"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('department_id','=',user.employee_id.department_id.id)]</field>
+            <field name="groups" eval="[(4, ref('custom_ptms.department_coordinator'))]"/>
+        </record>
+
+        <!-- Default Document user -->
+        <record id="base.default_user" model="res.users">
+             <field name="groups_id" eval="[(4,ref('base.group_user')),(4,ref('document_management_system.group_document_user'))]"/>
+        </record>
+
+        <!-- Group For Showing/Hiding Other Administrative Menus -->
+        <record id="make_invisible" model="res.groups">
+            <field name="name">Show Other Menus</field>
+        </record>
+
+        <record model="ir.ui.menu" id="contacts.menu_contacts">
+            <field name="groups_id" eval="[(5,ref('make_invisible'))]"/>
+        </record>
+
+        <record model="ir.ui.menu" id="ks_dashboard_ninja.board_menu_root">
+            <field name="groups_id" eval="[(5,ref('make_invisible'))]"/>
+        </record>
+
+        <record model="ir.ui.menu" id="sale.sale_menu_root">
+            <field name="groups_id" eval="[(5,ref('make_invisible'))]"/>
+        </record>
+
+        <record model="ir.ui.menu" id="school.menu_ems">
+            <field name="groups_id" eval="[(5,ref('make_invisible'))]"/>
+        </record>
+
+        <record model="ir.ui.menu" id="document_management_system.menu_documents">
+            <field name="groups_id" eval="[(5,ref('make_invisible'))]"/>
+        </record>
+
+        <record model="ir.ui.menu" id="calendar.mail_menu_calendar">
+            <field name="groups_id" eval="[(5,ref('make_invisible'))]"/>
+        </record>
+
+        <record model="ir.ui.menu" id="crm.crm_menu_root">
+            <field name="groups_id" eval="[(5,ref('make_invisible'))]"/>
+        </record>
+
+        <record model="ir.ui.menu" id="account.menu_finance">
+            <field name="groups_id" eval="[(5,ref('make_invisible'))]"/>
+        </record>
+
+        <record model="ir.ui.menu" id="hr.menu_hr_root">
+            <field name="groups_id" eval="[(5,ref('make_invisible'))]"/>
+        </record>
+
+
+    </data>
+</odoo>

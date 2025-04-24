@@ -1,0 +1,33 @@
+stages:
+  - publish
+  - deploy
+
+variables:
+  TAG_LATEST: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:latest
+  TAG_COMMIT: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
+  CONTAINER_NAME: ngemba-mining-web
+
+build_docker_image:
+  stage: publish
+  tags:
+    - shell
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
+    - DOCKER_BUILDKIT=1 docker build -t $TAG_COMMIT -t $TAG_LATEST .
+    - docker push $TAG_COMMIT
+    - docker push $TAG_LATEST
+
+deploy_to_staging:
+  stage: deploy
+  tags:
+    - shell
+  environment:
+    name: staging
+    url: http://ngemba-mining.ipserp.com/
+  only:
+    - main
+  script:
+    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "echo $CI_DEPLOY_PASSWORD | docker login $CI_REGISTRY -u $CI_DEPLOY_USER --password-stdin "
+    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker compose -f $COMPOSE_FILE_PATH pull web"
+    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker compose -f $COMPOSE_FILE_PATH down web"
+    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker compose -f $COMPOSE_FILE_PATH up web -d"

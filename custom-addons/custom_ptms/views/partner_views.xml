@@ -1,0 +1,147 @@
+<?xml version="1.0" ?>
+<odoo>
+
+    <record model="ir.ui.view" id="view_partner_form">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="website" position="attributes">
+                <attribute name="placeholder">https://www.example.com</attribute>
+            </field>
+            <field name="title" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="function" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="vat" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <page name="sales_purchases" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </page>
+            <div name="button_box" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </div>
+            <field name="city" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="zip" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="street" position="attributes">
+                <attribute name="placeholder">Physical Address</attribute>
+            </field>
+            <field name="street2" position="attributes">
+                <attribute name="placeholder">Postal Address</attribute>
+            </field>
+            <field name="state_id" position="after">
+                <field name="district_id" class="o_address_city" placeholder="District" options='{"no_open": True,"no_create": True}' attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" context="{'state_id': state_id,'zip': zip}"/>
+                <field name="ward_id" class="o_address_city" placeholder="Ward" options='{"no_open": True,"no_create": True}' attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" context="{'district_id': district_id,'zip': zip}"/>
+            </field>
+            <field name="state_id" position="attributes">
+                <attribute name="placeholder">Region</attribute>
+                <attribute name="options">{"no_open": True,"no_create": True}</attribute>
+            </field>
+            <page name="internal_notes" position="before">
+                <page name="internal_notes" string="Vacancies">
+                    <field name="vacancy_lines">
+                        <tree string="Vacancies" editable="top" delete="false">
+                            <field name="company_id" invisible="1"/>
+                            <field name="partner_id" invisible="1"/>
+                            <field name="is_editable" invisible="1"/>
+                            <field name="academic_year_id"/>
+                            <field name="standard_id" attrs="{'readonly':[('is_editable','=',False)]}"/>
+                            <!-- <field name="division_id" attrs="{'readonly':[('is_editable','=',False)]}"/> -->
+                            <field name="given_chances" attrs="{'readonly':[('is_editable','=',False)]}"/>
+                            <field name="assigned_chances" attrs="{'readonly':[('is_editable','=',False)]}"/>
+                            <field name="remaining_chances"/>
+                        </tree>
+                    </field>
+                </page>
+            </page>
+            <!--<xpath expr="//notebook/page[@name='internal_notes']/field[@name='comment']" position="after">
+                <field name="company_id" string="School/College" />
+            </xpath> -->
+        </field>
+    </record>
+
+     <!-- Partner List view-->
+        <record id="view_partner_tree" model="ir.ui.view">
+            <field name="name">res.partner.tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                    <field name="city" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </field>
+                    <field name="state_id" position="attributes">
+                        <attribute name="string">Region</attribute>
+                        <attribute name="optional">show</attribute>
+                    </field>
+                    <field name="state_id" position="after">
+                        <field name="district_id" />
+                        <field name="ward_id" />
+                    </field>
+                    <field name="vat" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </field>
+            </field>
+        </record>
+
+    <!-- Invoice fields & Buttons-->
+    <record id="view_partner_property_form" model="ir.ui.view">
+        <field name="name">res.partner.property.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <page name="accounting" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </page>
+        </field>
+    </record>
+
+    <record id="view_res_partner_filter" model="ir.ui.view">
+        <field name="name">res.partner.filter</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <filter name="type_person" position="before">
+                <filter string="companies" name="company" domain="[('is_company', '=', True)]"/>
+            </filter>
+        </field>
+    </record>
+
+    <record id="action_companies" model="ir.actions.act_window">
+        <field name="name">Companies</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="base.view_res_partner_filter"/>
+        <field name="context">{'search_default_company': 1,'default_is_company': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a company in your database
+            </p>
+        </field>
+    </record>
+
+    <!-- MenuItem For Companies -->
+    <menuitem id="menu_company_vacancy" name="Company" parent="menu_coordinator" sequence="7" groups="school.group_school_administration,school.group_school_teacher,custom_ptms.department_coordinator"/>
+    <menuitem id="menu_companies" name="Companies" parent="menu_company_vacancy" action="action_companies" sequence="1" />
+
+    <menuitem id="menu_company_vacancy_teacher" name="Company" parent="menu_teacher" sequence="7" action="action_companies" groups="school.group_school_teacher,school.group_school_administration,custom_ptms.department_coordinator"/>
+
+    <!-- Hide/Show Root Menus -->
+    <menuitem id="sale.sale_menu_root" name="Sales" groups="custom_ptms.make_invisible"/>
+    <menuitem id="contacts.menu_contacts" name="Contacts" groups="custom_ptms.make_invisible"/>
+    <menuitem id="ks_dashboard_ninja.board_menu_root" name="Dashboard" groups="custom_ptms.make_invisible"/>
+    <menuitem id="document_management_system.menu_documents" name="Documents" groups="custom_ptms.make_invisible"/>
+    <menuitem id="school.menu_ems" name="EMS" groups="custom_ptms.make_invisible"/>
+    <menuitem id="calendar.mail_menu_calendar" name="Calendar" groups="custom_ptms.make_invisible"/>
+    <menuitem id="crm.crm_menu_root" name="CRM" groups="custom_ptms.make_invisible"/>
+    <menuitem id="hr.menu_hr_root" name="Employees" groups="custom_ptms.make_invisible"/>
+    <menuitem id="account.menu_finance" name="Invoicing" groups="custom_ptms.make_invisible"/>
+
+</odoo>

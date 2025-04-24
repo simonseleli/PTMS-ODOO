@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- District -->
+        <record id="view_country_district_tree" model="ir.ui.view">
+            <field name="name">res.country.district.tree</field>
+            <field name="model">res.country.district</field>
+            <field name="arch" type="xml">
+                <tree string="District" editable="bottom">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="state_id" options="{'no_create': True}"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_country_district_form" model="ir.ui.view">
+            <field name="name">res.country.district.form</field>
+            <field name="model">res.country.district</field>
+            <field name="arch" type="xml">
+                <form string="District">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="state_id" options='{"no_open": True}'/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_country_district_search" model="ir.ui.view">
+            <field name="name">res.country.district.search</field>
+            <field name="model">res.country.district</field>
+            <field name="arch" type="xml">
+                <search string="State">
+                    <field name="name"/>
+                    <field name="state_id"/>
+                    <group string="Group By">
+                        <filter name="groupby_state" string="Region" context="{'group_by': 'state_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_country_state" model="ir.actions.act_window">
+            <field name="name">Regions</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.country.state</field>
+            <field name="view_id" ref="base.view_country_state_tree"/>
+            <field name="help">You can manage the different regions you are working on from here. Each region is attached to one country.</field>
+        </record>
+
+        <record id="action_country_district" model="ir.actions.act_window">
+            <field name="name">Districts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.country.district</field>
+            <field name="view_id" ref="view_country_district_tree"/>
+            <field name="help">You can manage the different Districts you are working on from here. Each district is attached to one region.</field>
+        </record>
+
+        <!-- Ward -->
+        <record id="view_country_ward_tree" model="ir.ui.view">
+            <field name="name">res.country.ward.tree</field>
+            <field name="model">res.country.ward</field>
+            <field name="arch" type="xml">
+                <tree string="Ward" editable="bottom">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="district_id" options="{'no_create': True}"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_country_ward_form" model="ir.ui.view">
+            <field name="name">res.country.ward.form</field>
+            <field name="model">res.country.ward</field>
+            <field name="arch" type="xml">
+                <form string="Ward">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="district_id" options='{"no_open": True}'/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_country_ward_search" model="ir.ui.view">
+            <field name="name">res.country.ward.search</field>
+            <field name="model">res.country.ward</field>
+            <field name="arch" type="xml">
+                <search string="Ward">
+                    <field name="name"/>
+                    <field name="district_id"/>
+                    <group string="Group By">
+                        <filter name="groupby_district" string="District" context="{'group_by': 'district_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_country_ward" model="ir.actions.act_window">
+            <field name="name">Wards</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.country.ward</field>
+            <field name="view_id" ref="view_country_ward_tree"/>
+            <field name="help">You can manage the different Wards you are working on from here. Each ward is attached to one district.</field>
+        </record>
+
+        <menuitem id="menu_country_state" name="Regions" sequence="0"
+                  parent="school.menu_school_config_form1" action="action_country_state" groups="base.group_erp_manager"/>
+
+        <menuitem id="menu_country_district" name="Districts" sequence="1"
+                  parent="school.menu_school_config_form1" action="action_country_district" groups="base.group_erp_manager"/>
+        
+        <menuitem id="menu_country_ward" name="Wards" sequence="2"
+                  parent="school.menu_school_config_form1" action="action_country_ward" groups="base.group_erp_manager"/>
+
+    </data>
+</odoo>

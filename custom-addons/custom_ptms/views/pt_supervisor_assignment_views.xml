@@ -1,0 +1,103 @@
+<?xml version="1.0" ?>
+<odoo>
+
+    <record id="supervisor_assignment_search_view" model="ir.ui.view">
+        <field name="name">pt.supervisor.assignment.form.search</field>
+        <field name="model">pt.supervisor.assignment</field>
+        <field name="arch" type="xml">
+        <search>
+            <field name="company_id" string="School"></field>
+            <field name="academic_year_id"></field>
+            <filter string="Current Academic Year" name="academic_year" domain="[('current_year','=',True)]"/>
+        </search>
+        </field>
+    </record>
+
+    <record id="pt_summary_assignment_form" model="ir.ui.view">
+            <field name="name">pt.supervisor.assignment.form</field>
+            <field name="model">pt.supervisor.assignment</field>
+            <field name="arch" type="xml">
+                <form string="Supervisor Assignment" create="false" edit="true" delete="false" import="false">
+                    <header>
+                        <button name="button_done" states="draft" string="Done" class="oe_highlight" type="object" groups="school.group_school_administration,custom_ptms.department_coordinator"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done" nolabel="1"/>
+                    </header>
+                    <sheet>
+                        <field name="company_id" invisible="1"/>
+                        <group>
+                            <field name="teacher_id" options='{"no_create": True,"no_open": True}'/>
+                        </group>
+                        <group>
+                            <field name="application_ids" domain="[('state','=','accepted'),('current_year','=',True),('is_assigned','=',False)]" options='{"no_create": True,"no_open": True}' widget="many2many_tags" />
+                        </group>
+                        
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    <record id="pt_summary_assignment_tree" model="ir.ui.view">
+        <field name="name">pt.supervisor.assignment.tree</field>
+        <field name="model">pt.supervisor.assignment</field>
+        <field name="arch" type="xml">
+            <tree string="Supervisor Assignment" edit="false"  delete="false" import="false">
+                <field name="company_id" invisible="1"/>
+                <field name="teacher_id"/>
+                <field name="academic_year_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="pt_summary_assignment_action" model="ir.actions.act_window">
+        <field name="name">Assign Supervisors</field>
+        <field name="res_model">pt.supervisor.assignment</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="supervisor_assignment_search_view"/>
+        <field name="view_id" ref="pt_summary_assignment_tree"/>
+        <field name="context">{"search_default_academic_year":1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Supervisor Assignment
+            </p>
+        </field>
+    </record>
+
+    <record id="pt_summary_assigned_action" model="ir.actions.act_window">
+        <field name="name">Assigned Student Applications</field>
+        <field name="res_model">pt.application</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="application_search_view"/>
+        <field name="view_id" ref="assignment_confirm_tree"/>
+        <field name="context">{"search_default_academic_year_search":1}</field>
+        <field name="domain">[('is_assigned','=',True),('state','=','accepted')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Assigned Student Applications
+            </p>
+        </field>
+    </record>
+
+    <record id="pt_summary_unassigned_action" model="ir.actions.act_window">
+        <field name="name">Unassigned Student Applications</field>
+        <field name="res_model">pt.application</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="application_search_view"/>
+        <field name="view_id" ref="submit_to_confirm_tree"/>
+        <field name="context">{"search_default_academic_year_search":1}</field>
+        <field name="domain">[('is_assigned','=',False),('state','=','accepted')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Unassigned Student Applications
+            </p>
+        </field>
+    </record>
+    
+    <menuitem id="menu_pt_summary" name="Assign Supervisors" parent="menu_coordinator" sequence="8" />
+    <menuitem id="menu_pt_summary_assign" name="Assign Supervisors" parent="menu_pt_summary" action="pt_summary_assignment_action" sequence="1" />
+    <menuitem id="menu_pt_summary_assigned" name="Assigned Students" parent="menu_pt_summary" action="pt_summary_assigned_action" sequence="2" />
+    <menuitem id="menu_pt_summary_unassigned" name="Unassigned Students" parent="menu_pt_summary" action="pt_summary_unassigned_action" sequence="3" />
+
+</odoo>

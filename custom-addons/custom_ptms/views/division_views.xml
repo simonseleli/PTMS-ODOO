@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!-- Form View Of Standard Division Information-->
+    <record id="view_standard_division_form" model="ir.ui.view">
+        <field name="name">standard.division.form</field>
+        <field name="model">standard.division</field>
+        <field name="inherit_id" ref="school.view_standard_division_form"/>
+        <field name="arch" type="xml">
+            <field name="description" position="after">
+                <field name="company_id" />
+            </field>
+        </field>
+    </record>
+    
+    <!-- Tree View Of Standard Division Information-->
+    <record id="view_standard_division_tree" model="ir.ui.view">
+        <field name="name">standard.division.tree</field>
+        <field name="model">standard.division</field>
+        <field name="inherit_id" ref="school.view_standard_division_tree"/>
+        <field name="arch" type="xml">
+                <field name="code" position="after">
+                    <field name="company_id" />
+                </field>
+        </field>
+    </record>
+</odoo>

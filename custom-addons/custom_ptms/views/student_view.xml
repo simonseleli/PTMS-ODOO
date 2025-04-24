@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <!-- Form View 1 Of Student's Profiles -->
+    <record id="view_student_student_form_1" model="ir.ui.view">
+        <field name="name">student.student.form.1</field>
+        <field name="model">student.student</field>
+        <field name="inherit_id" ref="school.view_student_student_form_1"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[3]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[4]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[5]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[6]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[7]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[8]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[9]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[10]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <field name="student_code" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="roll_no" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="roll_no" position="after">
+                <field name="registration_no" />
+            </field>
+        </field>
+    </record>
+
+    <!-- Form View 2 Of Student's Admission -->
+    <record id="view_student_student_form_2" model="ir.ui.view">
+        <field name="name">student.student.form.2</field>
+        <field name="model">student.student</field>
+        <field name="inherit_id" ref="school.view_student_student_form_2"/>
+        <field name="arch" type="xml">
+            <field name="school_id" position="before">
+                <field name="registration_no" required="1"/>
+            </field>
+            <field name="middle" position="attributes">
+                <attribute name="required">0</attribute>
+            </field>
+            <field name="gender" position="attributes">
+                <attribute name="required">0</attribute>
+            </field>
+        </field>
+    </record>
+
+    <!-- Tree View 1 Of Student's Profiles -->
+    <record id="view_student_student_tree_1" model="ir.ui.view">
+        <field name="name">student.student.tree.1</field>
+        <field name="model">student.student</field>
+        <field name="inherit_id" ref="school.view_student_student_tree_1"/>
+        <field name="arch" type="xml">
+            <field name="year" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="admission_date" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="state" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="gender" position="after">
+                <field name="standard_id" />
+            </field>
+            <field name="pid" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="pid" position="after">
+                <field name="registration_no" />
+            </field>
+        </field>
+    </record>
+
+    <!-- Tree View  Of Student's Admission -->
+    <record id="view_student_student_tree_2" model="ir.ui.view">
+        <field name="name">student.student.tree.2</field>
+        <field name="model">student.student</field>
+        <field name="inherit_id" ref="school.view_student_student_tree_2"/>
+        <field name="arch" type="xml">
+            <field name="name" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="name" position="after">
+                <field name="name" />
+            </field>
+            <field name="pid" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="pid" position="after">
+                <field name="registration_no" />
+            </field>
+        </field>
+    </record>
+
+    <!-- Search View 1 Of Student's Profiles -->
+    <record id="view_student_student_search_1" model="ir.ui.view">
+        <field name="name">student.student.search.1</field>
+        <field name="model">student.student</field>
+        <field name="inherit_id" ref="school.view_student_student_search_1"/>
+        <field name="arch" type="xml">
+                    <field name="pid" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </field>
+                    <field name="year" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </field>
+                    <field name="school_id" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </field>
+                    <field name="student_name" position="after">
+                        <field name="name" />
+                        <field name="registration_no" />
+                    </field>
+               
+                    <filter name="school" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </filter>
+                    <filter name="done" position="attributes">
+                        <attribute name="string">Active</attribute>
+                    </filter>           
+        </field>
+    </record>
+
+    <!-- Action Of Form, Tree Views Of Student Information -->
+    <record id="action_student_student_list" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="domain">[('state', '=', 'done')]</field>
+        <field name="context">{'search_default_done_student':1}</field>
+        <field name="res_model">student.student</field>
+        <field name="view_id" ref="" />
+        <field name="search_view_id" ref="school.view_student_student_search_1" />
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Action Done bind to model -->
+    <record id="call_from_student_action" model="ir.actions.server">
+        <field name="name">Confirm Students</field>
+        <field name="model_id" ref="model_student_student"/>
+        <field name="binding_model_id" ref="model_student_student"/>
+        <field name="state">code</field>
+        <field name="code">records.admission_done()</field>
+    </record>
+
+    <menuitem id="menu_pt_teachers_coordinator" name="Students" parent="menu_coordinator" action="action_student_student_list" sequence="5"/>
+</odoo>

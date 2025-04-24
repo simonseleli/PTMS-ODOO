@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+
+        <record id="view_school_standard_form" model="ir.ui.view">
+            <field name="name">school.standard.form</field>
+            <field name="model">school.standard</field>
+            <field name="inherit_id" ref="school.view_school_standard_form"/>
+            <field name="arch" type="xml">
+                <field name="capacity" position="before">
+                    <field name="department_id" />
+                </field>
+                <field name="class_room_id" position="after">
+                    <field name="officer_marks" />
+                    <field name="logbook_marks" />
+                    <field name="supervisor_marks" />
+                    <field name="report_marks" />
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

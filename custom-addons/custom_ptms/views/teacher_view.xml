@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+        <!-- tree View Of Teahcer's Profiles -->
+        <record id="view_school_teacher_tree" model="ir.ui.view">
+            <field name="name">school.teacher.tree</field>
+            <field name="model">school.teacher</field>
+            <field name="inherit_id" ref="school.view_school_teacher_tree"/>
+            <field name="arch" type="xml">
+                <field name="parent_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+            </field>
+        </record>
+
+        <!-- Form View Of Teahcer's Profiles -->
+        <record id="view_school_teacher_form" model="ir.ui.view">
+            <field name="name">school.teacher.form</field>
+            <field name="model">school.teacher</field>
+            <field name="inherit_id" ref="school.view_school_teacher_form"/>
+            <field name="arch" type="xml">
+
+                <field name="is_parent" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="stu_parent_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="subject_id" position="attributes">
+                    <attribute name="required">0</attribute>
+                </field>
+
+            </field>
+        </record>
+
+        <record id="school.action_school_teacher_form" model="ir.actions.act_window">
+            <field name="name">Supervisor Profile</field>
+            <field name="res_model">school.teacher</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_pt_students_coordinator" name="Supervisors" parent="menu_coordinator" action="school.action_school_teacher_form" sequence="6"/>
+    </data>
+</odoo>
