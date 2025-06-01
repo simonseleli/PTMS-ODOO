@@ -20,7 +20,7 @@ class ConfirmationWizard(models.TransientModel):
     def save_assignment(self):
         if self.student_ids and self.vacancy_id:
             for student in self.student_ids:
-                application = self.env['pt.application'].search([('user_id','=',student.user_id.id),('academic_year','=',self.academic_year.id),('state','in',['draft','submitted','accepted'])])
+                application = self.env['pt.place.application'].search([('user_id','=',student.user_id.id),('academic_year','=',self.academic_year.id),('state','in',['draft','submitted','accepted'])])
                 if not application:
                     values = {
                         'vacancy_id': self.vacancy_id.id,
@@ -32,5 +32,5 @@ class ConfirmationWizard(models.TransientModel):
                         'state': 'accepted',
                     }
                     self.vacancy_id.assigned_chances += 1
-                    res = self.env['pt.application'].sudo().create(values)
+                    res = self.env['pt.place.application'].sudo().create(values)
             return

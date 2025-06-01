@@ -17,7 +17,7 @@ class PublishWizard(models.TransientModel):
         status = False
         if self.is_publish == 'pub':
             status = True
-            applications = self.env['pt.application'].search([('academic_year','=',self.academic_year.id)])
+            applications = self.env['pt.place.application'].search([('academic_year','=',self.academic_year.id)])
             for application in applications:
                 application.is_published = status
             return

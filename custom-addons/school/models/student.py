@@ -136,14 +136,8 @@ than %s years!''' % (self.school_id.required_age)))
 
     @api.model
     def check_current_year(self):
-        '''Method to get default value of logged in Student'''
-        res = self.env['academic.year'].search([('current', '=',
-                                                 True)])
-        if not res:
-            raise ValidationError(_('''There is no current Academic Year \
-defined!Please contact to Administator!'''
-                                    ))
-        return res.id
+        res = self.env['academic.year'].search([('current', '=', True)], limit=1)
+        return res.id if res else False  # Return False instead of raising error
 
     family_con_ids = fields.One2many('student.family.contact',
                                      'family_contact_id',
@@ -163,8 +157,7 @@ defined!Please contact to Administator!'''
     contact_mobile = fields.Char('Mobile no')
     roll_no = fields.Integer('Roll No.', readonly=True)
     photo = fields.Binary('Photo', default=_default_image)
-    year = fields.Many2one('academic.year', 'Academic Year', readonly=True,
-                           default=check_current_year)
+    year = fields.Many2one('academic.year', 'Academic Year', readonly=True)
     cast_id = fields.Many2one('student.cast', 'Religion/Caste')
     relation = fields.Many2one('student.relation.master', 'Relation')
 
@@ -283,8 +276,8 @@ defined!Please contact to Administator!'''
         student_group = self.env.ref('school.group_school_student')
         emp_group = self.env.ref('base.group_user')
         for rec in self:
-            if not rec.standard_id:
-                raise ValidationError(_('''Please select class!'''))
+            # if not rec.standard_id:
+            #     raise ValidationError(_('''Please select class!'''))
             #if rec.standard_id.remaining_seats <= 0:
             #    raise ValidationError(_('Seats of class %s are full'
             #                            ) % rec.standard_id.standard_id.name)

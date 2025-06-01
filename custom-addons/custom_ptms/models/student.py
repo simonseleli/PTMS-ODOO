@@ -13,6 +13,34 @@ class StudentStudent(models.Model):
     registration_no = fields.Char('Registration No', states={'done': [('readonly', True)]})
     department_id = fields.Many2one('hr.department', 'Department',related='standard_id.department_id', store=True)
 
+    pt_application_ids = fields.One2many(
+        'pt.place.application',
+        'student_id',
+        string="PT Applications"
+    )
+
+    active_pt_application_count = fields.Integer(
+        compute='_compute_active_pt_applications',
+        string="Active PT Applications"
+    )
+
+    def _compute_active_pt_applications(self):
+        for student in self:
+            student.active_pt_application_count = len(student.pt_application_ids.filtered(
+                lambda a: a.state in ['submitted', 'approved']
+            ))
+
+    def action_view_pt_applications(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'PT Applications',
+            'view_mode': 'tree,form',
+            'res_model': 'pt.place.application',
+            'domain': [('student_id', '=', self.id)],
+            'context': {'default_student_id': self.id},
+        }
+
     @api.model
     def _get_company(self):
         return self._context.get('company_id', self.env.user.company_id.id)

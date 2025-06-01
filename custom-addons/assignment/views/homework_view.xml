@@ -149,7 +149,7 @@
                             <field name="file_name" invisible="1"/>
                         </group>
                         <group string="Reject Assignment" attrs="{'invisible':[('state','in',['draft','active','done'])]}">
-                            <field name="rejection_reason" attrs="{'invisible':[('state','in',['draft','active','done'])]}"/>
+<!--                            <field name="rejection_reason" attrs="{'invisible':[('state','in',['draft','active','done'])]}"/>-->
                         </group>
                         <field name="teacher_assignment_id" invisible="1"/>
                         <field name="student_standard" invisible="1"/>

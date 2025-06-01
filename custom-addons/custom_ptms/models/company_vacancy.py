@@ -83,13 +83,13 @@ class PtCompanyVacancy(models.Model):
                     'state': 'submitted',
                     'pt_type': vacancy.standard_standard_id.id
                 }
-                self.env['pt.application'].sudo().create(values)
+                self.env['pt.place.application'].sudo().create(values)
                 view_id = self.env.ref('custom_ptms.application_student_tree').id
                 return {
                     'name': 'Application',
                     'view_mode': 'tree,form',
                     'views': [(view_id, 'tree')],
-                    'res_model': 'pt.application',
+                    'res_model': 'pt.place.application',
                     'view_id': view_id,
                     'type': 'ir.actions.act_window',
                     'target': 'main',

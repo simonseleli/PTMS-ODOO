@@ -1,0 +1,84 @@
+<odoo>
+
+<!-- Action with kanban -->
+<record id="action_logbook_entry" model="ir.actions.act_window">
+    <field name="name">Logbook Entries</field>
+    <field name="res_model">pt.application.logbook</field>
+    <field name="view_mode">kanban,form</field>
+</record>
+
+<!-- Kanban View -->
+<record id="view_logbook_kanban" model="ir.ui.view">
+    <field name="name">logbook.entry.kanban</field>
+    <field name="model">pt.application.logbook</field>
+    <field name="arch" type="xml">
+        <kanban create="false" delete="false">
+            <field name="name"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click">
+                        <strong>Week No:</strong> <t t-esc="record.name.value"/><br/>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </field>
+</record>
+
+<!--form view -->
+<record id="view_logbook_form" model="ir.ui.view">
+    <field name="name">logbook.entry.form</field>
+    <field name="model">pt.application.logbook</field>
+    <field name="arch" type="xml">
+        <form create="false" delete="false">
+            <sheet>
+                <!-- Week Number on its own line (centered) -->
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <field name="name" string="WEEK NO." placeholder="Enter week number (e.g., Week 1)"/>
+                    </div>
+                </div>
+
+                <!-- FROM and TO on next line -->
+                <div class="row mt16">
+                    <!-- Left-aligned FROM field -->
+                    <div class="col-6">
+                        <field name="date_from" string="FROM" placeholder="Select start date of the week"/>
+                    </div>
+
+                    <!-- Right-aligned TO field -->
+                    <div class="col-6 text-right">
+                        <field name="date_to" string="TO" placeholder="Select end date of the week"/>
+                    </div>
+                </div>
+
+                <notebook>
+                    <page string="Activities">
+                        <group>
+                            <label string="Monday" for="monday_activity"/>
+                            <field name="monday_activity" nolabel="1" placeholder="Describe Monday's activities"/>
+
+                            <label string="Tuesday" for="tuesday_activity"/>
+                            <field name="tuesday_activity" nolabel="1" placeholder="Describe Tuesday's activities"/>
+
+                            <label string="Wednesday" for="wednesday_activity"/>
+                            <field name="wednesday_activity" nolabel="1" placeholder="Describe Wednesday's activities"/>
+
+                            <label string="Thursday" for="thursday_activity"/>
+                            <field name="thursday_activity" nolabel="1" placeholder="Describe Thursday's activities"/>
+
+                            <label string="Friday" for="friday_activity"/>
+                            <field name="friday_activity" nolabel="1" placeholder="Describe Friday's activities"/>
+                        </group>
+                    </page>
+
+                    <page string="Main Job Details">
+                        <field name="main_job_details" nolabel="1" placeholder="Provide detailed description of the main job"/>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+</odoo>

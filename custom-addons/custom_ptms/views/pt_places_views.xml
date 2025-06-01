@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <!-- Action for PT Place -->
+    <record id="action_pt_place" model="ir.actions.act_window">
+        <field name="name">PT Places</field>
+        <field name="res_model">pt.place</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first PT Place
+            </p>
+        </field>
+    </record>
+
+    <!-- PT Place Tree View -->
+    <record id="view_pt_place_tree" model="ir.ui.view">
+        <field name="name">pt.place.tree</field>
+        <field name="model">pt.place</field>
+        <field name="arch" type="xml">
+            <tree string="PT Places">
+                <field name="name" string="Company Name"/>
+                <field name="region"/>
+                <field name="district"/>
+                <field name="total_chances"/>
+                <field name="available_chances"/>
+                <field name="active_applications"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- PT Place Form View -->
+    <record id="view_pt_place_form" model="ir.ui.view">
+        <field name="name">pt.place.form</field>
+        <field name="model">pt.place</field>
+        <field name="arch" type="xml">
+            <form string="PT Place">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Company Name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="name" string="Company Name"/>
+                            <field name="region"/>
+                            <field name="district"/>
+                        </group>
+                        <group>
+                            <field name="total_chances"/>
+                            <field name="available_chances" readonly="1"/>
+                            <field name="active_applications" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Applications">
+                            <field name="application_ids" context="{'default_place_id': id}">
+                                <tree>
+                                    <field name="name" string="Reference"/>
+                                    <field name="student_id" string="Student"/>
+                                    <field name="date"/>
+                                    <field name="state"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="name" string="Reference" readonly="1"/>
+                                            <field name="student_id" string="Student"/>
+                                            <field name="date"/>
+                                        </group>
+                                        <group>
+                                            <field name="state"/>
+<!--                                            <field name="rejection_reason" attrs="{'readonly': [('state', '!=', 'rejected')]}"/>-->
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

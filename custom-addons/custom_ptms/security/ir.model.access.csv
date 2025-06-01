@@ -58,3 +58,9 @@ access_admin_reminder_admin,student.reminder,school.model_student_reminder,depar
 access_student_cast_admin,student.cast,school.model_student_cast,department_coordinator,1,1,1,1
 access_res_users_admin,res.users,base.model_res_users,department_coordinator,1,1,1,1
 access_subject_syllabus_admin,subject.syllabus,school.model_subject_syllabus,department_coordinator,1,0,0,0
+
+access_pt_application_assessment_sheet,access.pt.application.assessment.sheet,model_pt_application_assessment_sheet,base.group_user,1,1,1,1
+access_pt_application_logbook,access.pt.application.logbook,model_pt_application_logbook,base.group_user,1,1,1,1
+
+access_pt_place,access.pt.place,model_pt_place,base.group_user,1,1,1,1
+access_pt_place_application,access.pt.place.application,model_pt_place_application,base.group_user,1,1,1,1

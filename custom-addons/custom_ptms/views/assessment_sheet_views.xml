@@ -1,0 +1,94 @@
+<odoo>
+    <!-- ================= ACTION WINDOW ================= -->
+    <record id="action_assessment_sheet" model="ir.actions.act_window">
+        <field name="name">Assessment Sheets</field>
+        <field name="res_model">pt.application.assessment.sheet</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('application_id', '=', active_id)]</field>
+        <field name="context">{'default_application_id': active_id}</field>
+    </record>
+
+    <!-- ================= TREE VIEW ================= -->
+    <record id="view_assessment_sheet_tree" model="ir.ui.view">
+        <field name="name">assessment.sheet.tree</field>
+        <field name="model">pt.application.assessment.sheet</field>
+        <field name="arch" type="xml">
+            <tree string="Assessment Sheets">
+                <field name="name"/>
+                <field name="total"/>
+                <field name="is_final"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ================= FORM VIEW ================= -->
+    <record id="view_assessment_sheet_form" model="ir.ui.view">
+        <field name="name">assessment.sheet.form</field>
+        <field name="model">pt.application.assessment.sheet</field>
+        <field name="arch" type="xml">
+            <form string="Assessment Sheet"  create="false">
+                <sheet>
+                    <!-- Basic Information Section -->
+                    <group string="General Information">
+                        <field name="application_id" options="{'no_create': True, 'no_open': True}" readonly="1"/>
+                        <field name="name" readonly="1"/>
+                        <field name="supervisor_id" readonly="1"/>
+                        <field name="is_final"/>
+                    </group>
+
+                    <!-- Personnel Section -->
+                    <notebook>
+                        <page string="Personnel">
+                            <group>
+                                <group string="Training Officer">
+                                    <field name="training_officer"/>
+                                </group>
+                                <group string="Academic Supervisor">
+                                    <field name="academic_supervisor"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Logbook Assessment Section -->
+                        <page string="Logbook Assessment">
+                            <group string="Student's Logbook (Weekly Report)">
+                                <field name="logbook_content"/>
+                                <field name="logbook_neatness"/>
+                                <field name="logbook_relevance"/>
+                                <field name="logbook_organization"/>
+                            </group>
+                        </page>
+
+                        <!-- Main Report Sections -->
+                        <page string="MAIN REPORT - The Company or Organisation">
+                            <group string="The Company/Organization">
+                                <field name="report_intro"/>
+                                <field name="report_safety"/>
+                                <field name="report_job_desc"/>
+                                <field name="report_recruitment"/>
+                            </group>
+                        </page>
+
+                        <page string="MAIN REPORT - Main Task">
+                            <group string="The Main Task">
+                                <field name="task_diagram"/>
+                                <field name="task_problem"/>
+                                <field name="task_solution"/>
+                                <field name="task_comparison"/>
+                                <field name="task_technical"/>
+                                <field name="task_conclusion"/>
+                                <field name="task_references"/>
+                                <field name="task_formatting"/>
+                            </group>
+                        </page>
+                    </notebook>
+
+                    <!-- Total Score Section -->
+                    <group string="Scoring">
+                        <field name="total" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

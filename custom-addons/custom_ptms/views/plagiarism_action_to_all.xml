@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_check_plagiarism_bulk" model="ir.actions.server">
+        <field name="name">Check Plagiarism for All</field>
+        <field name="model_id" ref="custom_ptms.model_pt_place_application"/>
+        <field name="state">code</field>
+        <field name="code">records = env['pt.place.application'].browse(context.get('active_ids', []))
+            if not records:
+            records = env['pt.place.application'].search([
+            ('final_report', '!=', False),
+            ('state', 'in', ['approved', 'in_progress', 'completed'])
+            ])
+            total = len(records)
+            processed = 0
+            errors = []
+            for record in records:
+            try:
+            if not record.report_text:
+            text = record._extract_text(record.final_report, record.report_filename)
+            if not text:
+            errors.append(f"No text extracted for {record.student_name} (ID: {record.id})")
+            continue
+            record.report_text = text
+            record.plagiarism_results = record._check_plagiarism(record.report_text)
+            processed += 1
+            except Exception as e:
+            errors.append(f"Error for {record.student_name} (ID: {record.id}): {str(e)}")
+            env.cr.commit() # Commit after each record to avoid rollback on error
+            message = f"Processed {processed}/{total} records."
+            if errors:
+            message += f"\nErrors:\n" + "\n".join(errors)
+            return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+            'title': 'Bulk Plagiarism Check Completed',
+            'message': message,
+            'type': 'success' if not errors else 'warning',
+            'sticky': True,
+            }
+            }
+        </field>
+    </record>
+</odoo>

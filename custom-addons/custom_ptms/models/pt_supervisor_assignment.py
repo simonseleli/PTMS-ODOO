@@ -1,5 +1,7 @@
 # -*- coding: utf-8 - *-
 from odoo import models, fields, api
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class PtSupervisorAssignment(models.Model):
@@ -14,7 +16,7 @@ class PtSupervisorAssignment(models.Model):
                              ], string="Status", readonly=True, default='draft',track_visibility='onchange',tracking=True)
     academic_year_id = fields.Many2one(
         'academic.year', string="Academic Year", domain="[('current','=',True)]" ,default=lambda self: self.env['academic.year'].search([('current','=',True)]))
-    application_ids = fields.One2many('pt.application', 'assignment_id', string='Student Application', required=True)
+    application_ids = fields.One2many('pt.place.application', 'assignment_id', string='Student Application', required=True)
     teacher_id = fields.Many2one('school.teacher', string='Supervisor',required=True)
     teacher_user_id = fields.Many2one('res.users', related='teacher_id.employee_id.user_id')
     current_year = fields.Boolean(string='Current Academic Year', default=True)
@@ -29,12 +31,18 @@ class PtSupervisorAssignment(models.Model):
             for new_id in self.application_ids:
                 new_id.is_assigned = True
         return res
-    
+
     def _mark_assignment_status(self):
-        assignments = self.search([('current_year','=',True)], limit=100)
-        current_active_year = self.env['academic.year'].search([('current', '=', True)])
+        _logger.info("Running _mark_assignment_status for pt.supervisor.assignment")
+        current_active_year = self.env['academic.year'].search([('current', '=', True)], limit=1)
+        if not current_active_year:
+            _logger.warning("No current academic year found. Skipping _mark_assignment_status.")
+            return
+
+        assignments = self.search([('current_year', '=', True)], limit=100)
         for assignment in assignments:
-            if assignment.academic_year_id.id != current_active_year.id:
+            if assignment.academic_year_id != current_active_year:
+                _logger.info(f"Setting current_year = False for assignment {assignment.id}")
                 assignment.current_year = False
 
     @api.model
@@ -71,5 +79,5 @@ class PtSummary(models.Model):
     company_id = fields.Many2one('res.company', 'School',default=lambda self: self._get_company())
     date = fields.Datetime(string="Date Visited", default=lambda self: fields.datetime.now())
     academic_year_id = fields.Many2one('academic.year', string="Academic Year", domain="[('current','=',True)]" ,default=lambda self: self.env['academic.year'].search([('current','=',True)]))
-    application_ids = fields.Many2many('pt.application', 'assignment_id', string='Student Application', required=True)
+    application_ids = fields.Many2many('pt.place.application', 'assignment_id', string='Student Application', required=True)
     teacher_ids = fields.Many2many('school.teacher', string='Supervisor',required=True)

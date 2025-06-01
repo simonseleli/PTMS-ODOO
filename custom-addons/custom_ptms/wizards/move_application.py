@@ -13,7 +13,7 @@ class MoveApplications(models.TransientModel):
                                        required=True)
 
     def move_start(self):
-        application_obj = self.env['pt.application']
+        application_obj = self.env['pt.place.application']
         for app in application_obj.search([('current_year', '=', True)]):
             app.current_year =  False   
         return True

@@ -131,13 +131,13 @@
                         <field name="name" />
                         <field name="registration_no" />
                     </field>
-               
+
                     <filter name="school" position="attributes">
                         <attribute name="invisible">1</attribute>
                     </filter>
                     <filter name="done" position="attributes">
                         <attribute name="string">Active</attribute>
-                    </filter>           
+                    </filter>
         </field>
     </record>
 
