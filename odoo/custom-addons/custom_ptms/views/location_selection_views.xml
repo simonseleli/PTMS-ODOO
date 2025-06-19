@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="location_selection_form" model="ir.ui.view">
+            <field name="name">pt.location.selection.form</field>
+            <field name="model">pt.location.selection</field>
+            <field name="arch" type="xml">
+                <form string="PT Location Preference" create="false" edit="false" delete="false" import="false">
+                    <sheet>
+                        <field name="company_id" invisible="1"/>
+                        <field name="is_editable" invisible="1"/>
+                        <field name="standard_id" invisible="1"/>
+                        <field name="division_id" invisible="1"/>
+                        <group col="4">
+                            <field name="academic_year_id" options='{"no_create": True,"no_open": True}'/>
+                            <field name="region_id" options='{"no_create": True,"no_open": True}'/>
+                        </group>
+                        <group col="4">
+                            <field name="district_id" options='{"no_create": True,"no_open": True}'/>
+                            <field name="ward_id" options='{"no_create": True,"no_open": True}'/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    <record id="location_selection_tree" model="ir.ui.view">
+        <field name="name">pt.location.selection.tree</field>
+        <field name="model">pt.location.selection</field>
+        <field name="arch" type="xml">
+            <tree string="PT Location Preference" edit="false"  delete="false" import="false">
+                <field name="company_id" invisible="1"/>
+                <field name="is_editable" invisible="1"/>
+                <field name="standard_id" invisible="1"/>
+                <field name="division_id" invisible="1"/>
+                <field name="academic_year_id"/>
+                <field name="region_id"/>
+                <field name="district_id"/>
+                <field name="ward_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="location_selection_tree_active" model="ir.ui.view">
+        <field name="name">pt.location.selection.tree</field>
+        <field name="model">pt.location.selection</field>
+        <field name="arch" type="xml">
+            <tree string="PT Location Preference" create="false" edit="false"  delete="false" import="false">
+                <field name="company_id" invisible="1"/>
+                <field name="is_editable" invisible="1"/>
+                <field name="standard_id" invisible="1"/>
+                <field name="division_id" invisible="1"/>
+                <field name="academic_year_id"/>
+                <field name="region_id"/>
+                <field name="district_id"/>
+                <field name="ward_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="location_selection" model="ir.actions.act_window">
+        <field name="name">PT Location Preference</field>
+        <field name="res_model">pt.location.selection</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="location_selection_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                PT Location Preference
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_select_location_pref">
+    <field name="name">PT Location Preference</field>
+    <field name="model_id" ref="model_pt_location_selection"/>
+    <field name="type">ir.actions.server</field>
+    <field name="state">code</field>
+    <field name="code">action = model.check_location_status()</field>
+  </record>
+    
+    <menuitem id="menu_location_selection" name="Location Preference" parent="menu_student" action="action_select_location_pref" sequence="1" />
+
+</odoo>

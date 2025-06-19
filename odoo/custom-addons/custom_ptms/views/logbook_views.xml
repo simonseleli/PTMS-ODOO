@@ -1,0 +1,107 @@
+<odoo>
+    <!-- Action with kanban -->
+    <record id="action_logbook_entry_dataa" model="ir.actions.act_window">
+        <field name="name">Logbook Entries</field>
+        <field name="res_model">pt.application.logbook</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="domain">[('student_id.user_id', '=', uid), ('application_id.state', '=', 'approved')]</field>
+        <field name="context">{'default_student_id': user.student_id.id}</field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="view_logbook_kanban" model="ir.ui.view">
+        <field name="name">logbook.entry.kanban</field>
+        <field name="model">pt.application.logbook</field>
+        <field name="arch" type="xml">
+            <kanban create="false" delete="false">
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="is_editable"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <strong>Week No:</strong> <t t-esc="record.name.value"/><br/>
+                            <strong>Student:</strong> <t t-esc="record.student_id.value"/><br/>
+                            <span t-if="record.is_editable.value or record.env.user.has_group('school.group_school_administration') or record.env.user.has_group('custom_ptms.department_coordinator')" class="badge badge-success">Editable</span>
+                            <span t-if="!(record.is_editable.value or record.env.user.has_group('school.group_school_administration') or record.env.user.has_group('custom_ptms.department_coordinator'))" class="badge badge-danger">Read-Only</span>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_logbook_form" model="ir.ui.view">
+        <field name="name">logbook.entry.form</field>
+        <field name="model">pt.application.logbook</field>
+        <field name="arch" type="xml">
+            <form create="false" delete="false">
+                <sheet>
+                    <!-- Hidden field for attrs -->
+                    <field name="is_editable" invisible="1"/>
+                    <!-- Warning banner for read-only entries -->
+                    <div attrs="{'invisible': [('is_editable', '=', True)]}" class="alert alert-danger" role="alert">
+                        <t t-if="record.date_to and record.date_to lt context_today()">
+                            This logbook entry is read-only because the week ended on <t t-esc="record.date_to"/>.
+                        </t>
+                        <t t-if="record.date_from and record.date_from gt context_today()">
+                            This logbook entry is read-only because the week has not yet started (starts on <t t-esc="record.date_from"/>).
+                        </t>
+                    </div>
+                    <!-- Editability status -->
+                    <group>
+                        <field name="is_editable" widget="boolean_toggle" readonly="1" string="Editable"/>
+                    </group>
+                    <!-- Application and Student -->
+                    <group>
+                        <field name="application_id" readonly="1"/>
+                        <field name="student_id" readonly="1"/>
+                    </group>
+                    <!-- Week Number on its own line (centered) -->
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <field name="name" string="WEEK NO." placeholder="Enter week number (e.g., Week 1)" readonly="1"/>
+                        </div>
+                    </div>
+                    <!-- FROM and TO on next line -->
+                    <div class="row mt16">
+                        <div class="col-6">
+                            <field name="date_from" string="FROM" placeholder="Select start date of the week" readonly="1"/>
+                        </div>
+                        <div class="col-6 text-right">
+                            <field name="date_to" string="TO" placeholder="Select end date of the week" readonly="1"/>
+                        </div>
+                    </div>
+                    <notebook>
+                        <page string="Activities">
+                            <group>
+                                <label string="Monday" for="monday_activity"/>
+                                <field name="monday_activity" nolabel="1" placeholder="Describe Monday's activities" attrs="{'readonly': [('is_editable', '=', False)]}"/>
+                                <label string="Tuesday" for="tuesday_activity"/>
+                                <field name="tuesday_activity" nolabel="1" placeholder="Describe Tuesday's activities" attrs="{'readonly': [('is_editable', '=', False)]}"/>
+                                <label string="Wednesday" for="wednesday_activity"/>
+                                <field name="wednesday_activity" nolabel="1" placeholder="Describe Wednesday's activities" attrs="{'readonly': [('is_editable', '=', False)]}"/>
+                                <label string="Thursday" for="thursday_activity"/>
+                                <field name="thursday_activity" nolabel="1" placeholder="Describe Thursday's activities" attrs="{'readonly': [('is_editable', '=', False)]}"/>
+                                <label string="Friday" for="friday_activity"/>
+                                <field name="friday_activity" nolabel="1" placeholder="Describe Friday's activities" attrs="{'readonly': [('is_editable', '=', False)]}"/>
+                            </group>
+                        </page>
+                        <page string="Main Job Details">
+                            <field name="main_job_details" nolabel="1" placeholder="Provide detailed description of the main job" attrs="{'readonly': [('is_editable', '=', False)]}"/>
+                        </page>
+                        <page string="Detailed Diagram of the Main Job">
+                            <group>
+                                <field name="attachment" widget="binary" string="Upload File" filename="attachment_filename" attrs="{'readonly': [('is_editable', '=', False)]}"/>
+                                <field name="attachment_filename" invisible="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,39 @@
+.o_form_view {
+    @mixin o-form-sheet-negative-margin() {
+        margin-left: -$o-horizontal-padding;
+        margin-right: -$o-horizontal-padding;
+        margin-top: -#{$o-horizontal-padding +1};
+    }
+
+    .o_form_uri {
+        color: $link-color;
+
+        &:hover {
+            color: darken($link-color, 15%);
+        }
+
+        >span {
+            color: $o-main-text-color;
+
+            &:hover {
+                color: $o-main-text-color;
+            }
+        }
+
+        >span:first-child {
+            color: $link-color;
+
+            &:hover {
+                color: darken($link-color, 15%);
+            }
+        }
+    }
+    .oe_button_box {
+        .o_stat_info .o_stat_value {
+            color: $o-brand-odoo !important;
+        }
+    }
+    .o_notebook .tab-content>.tab-pane {
+        padding: 0px 0px !important;
+    }
+}

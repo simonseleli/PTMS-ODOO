@@ -1,0 +1,49 @@
+<odoo>
+    <data noupdate="1">
+
+
+        <!-- Server Action to Check Approved PT Application -->
+        <record id="action_check_approved_application" model="ir.actions.server">
+            <field name="name">Check Approved PT Application</field>
+            <field name="model_id" ref="model_pt_place_application"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = env['pt.place.application'].action_check_approved_application()
+            </field>
+        </record>
+
+
+<!--        <record id="logbook_week_1" model="pt.application.logbook">-->
+<!--            <field name="name">Week 1</field>-->
+<!--        </record>-->
+
+<!--        <record id="logbook_week_2" model="pt.application.logbook">-->
+<!--            <field name="name">Week 2</field>-->
+<!--        </record>-->
+
+<!--        <record id="logbook_week_3" model="pt.application.logbook">-->
+<!--            <field name="name">Week 3</field>-->
+<!--        </record>-->
+
+<!--        <record id="logbook_week_4" model="pt.application.logbook">-->
+<!--            <field name="name">Week 4</field>-->
+<!--        </record>-->
+
+<!--        <record id="logbook_week_5" model="pt.application.logbook">-->
+<!--            <field name="name">Week 5</field>-->
+<!--        </record>-->
+
+<!--        <record id="logbook_week_6" model="pt.application.logbook">-->
+<!--            <field name="name">Week 6</field>-->
+<!--        </record>-->
+
+<!--        <record id="logbook_week_7" model="pt.application.logbook">-->
+<!--            <field name="name">Week 7</field>-->
+<!--        </record>-->
+
+<!--        <record id="logbook_week_8" model="pt.application.logbook">-->
+<!--            <field name="name">Week 8</field>-->
+<!--        </record>-->
+
+    </data>
+</odoo>

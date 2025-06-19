@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record model="ir.module.category" id="module_category_document">
+            <field name="name">Document</field>
+        </record>
+
+        <record id="group_document_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="module_category_document"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_document_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_category_document"/>
+            <field name="implied_ids" eval="[(4, ref('group_document_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Rule For Document Record Student -->
+        <record id="rule_document_document_student" model="ir.rule">
+            <field name="name">Rule Document Student</field>
+            <field name="model_id" ref="model_document_document"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">["&amp;",'|',('group_access','=',False),('group_access','in',[id for id in user.groups_id.ids]),('company_id','=',user.company_id.id)]</field>
+            <field name="groups" eval="[(4, ref('school.group_school_student'))]"/>
+        </record>
+
+        <!-- Rule For Document Record Company -->
+        <record id="rule_document_document_company" model="ir.rule">
+            <field name="name">Rule Document Company</field>
+            <field name="model_id" ref="model_document_document"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id','=',user.company_id.id)]</field>
+            <field name="groups" eval="[(4, ref('school.group_school_administration')),(4, ref('custom_ptms.department_coordinator')),(4, ref('school.group_school_teacher'))]"/>
+        </record>
+
+        <!-- Rule For Document Record Company As An Administrator -->
+        <record id="rrule_document_document_company_as_admin" model="ir.rule">
+            <field name="name">Rule Document Company As An Administrator</field>
+            <field name="model_id" ref="model_document_document"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force"> ['|','|',('company_id.child_ids','child_of',[user.company_id.id]),('company_id','child_of',[user.company_id.id]),('company_id','=',False)]</field>
+            <field name="groups" eval="[(4, ref('base.group_erp_manager'))]"/>
+        </record>
+
+        <!-- Rule For Document Record Staffs -->
+        <!--<record id="rule_document_document_staff" model="ir.rule">
+            <field name="name">Rule Document Staff</field>
+            <field name="model_id" ref="model_document_document"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|',('group_access','=',False),('group_access','in',[id for id in user.groups_id])]</field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        </record>-->
+
+    </data>
+</odoo>

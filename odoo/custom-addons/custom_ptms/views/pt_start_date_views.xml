@@ -1,0 +1,54 @@
+<odoo>
+
+    <!-- Tree View for PT Start Date -->
+    <record id="view_pt_start_date_tree" model="ir.ui.view">
+        <field name="name">pt.start.date.tree</field> <!-- corrected name -->
+        <field name="model">pt.start.date</field>
+        <field name="arch" type="xml">
+            <tree string="PT Logbook Start Dates" create="false">
+                <field name="logbook_start_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View for PT Start Date -->
+    <record id="view_pt_start_date_form" model="ir.ui.view">
+        <field name="name">pt.start.date.form</field>
+        <field name="model">pt.start.date</field>
+        <field name="arch" type="xml">
+            <form string="PT Logbook Start Date">
+                <sheet>
+                    <group>
+                        <field name="logbook_start_date" string="Logbook Start Date" required="1"/>
+                    </group>
+                    <div class="oe_chatter">
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for PT Start Date -->
+    <record id="action_pt_start_date" model="ir.actions.act_window">
+        <field name="name">PT Logbook Start Date</field>
+        <field name="res_model">pt.start.date</field>
+        <field name="view_mode">tree,form</field> <!-- tree first -->
+        <field name="view_id" ref="view_pt_start_date_tree"/> <!-- open tree first -->
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Set the start date for PT logbook entries. This date must be a Monday.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem
+        id="menu_pt_coordinator_start_date"
+        name="Logbook Start Date"
+        parent="menu_application_coordinator"
+        action="action_pt_start_date"
+        sequence="4"
+        groups="school.group_school_administration,custom_ptms.department_coordinator"/>
+
+</odoo>

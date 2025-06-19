@@ -1,0 +1,8 @@
+<odoo>
+    <data>
+    <!-- Menu Item Of PTMS -->
+    <menuitem id="menu_coordinator" name="Coordinator" web_icon="custom_ptms,static/description/ems.png" sequence="-10" groups="school.group_school_administration,custom_ptms.department_coordinator"/>
+    <menuitem id="menu_teacher" name="Supervisor" web_icon="custom_ptms,static/description/ems.png" sequence="-10" groups="school.group_school_teacher,school.group_school_administration,custom_ptms.department_coordinator"/>
+    <menuitem id="menu_student" name="Student" web_icon="custom_ptms,static/description/ems.png" sequence="-10" groups="school.group_school_student"/>
+    </data>
+</odoo>

@@ -1,0 +1,46 @@
+// Listview
+.table-responsive {
+    overflow-x: initial;
+
+    .o_list_view {
+
+        // th & td are here for compatibility with chrome
+        thead,
+        thead tr:nth-child(1) th {
+            padding-top: 4px;
+            padding-bottom: 4px;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        thead tr:nth-child(1) th {
+            background-color: white;
+        }
+
+        thead tr:nth-child(1) th:hover {
+            background-color: $o-list-footer-bg-color-lighter;
+        }
+
+        tfoot,
+        tfoot tr:nth-child(1) td {
+            font-weight: bold;
+            position: sticky;
+            bottom: 0;
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
+
+        tfoot tr:nth-child(1) td {
+            background-color: white;
+        }
+    }
+
+    .o_list_view.table {
+        border: none;
+    }
+
+    .o_list_view.table th {
+        border: none;
+    }
+}

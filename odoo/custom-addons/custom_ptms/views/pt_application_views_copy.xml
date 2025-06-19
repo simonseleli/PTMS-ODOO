@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!-- Search View -->
+  <record id="pt_application_search_view" model="ir.ui.view">
+      <field name="name">pt.place.application.search</field>
+      <field name="model">pt.place.application</field>
+      <field name="arch" type="xml">
+          <search>
+              <field name="place_id" string="Company"/>
+              <field name="academic_year"/>
+              <field name="student_name"/>
+              <field name="registration_no"/>
+              <field name="division_id"/>
+              <field name="is_assigned" invisible="1"/>
+              <field name="assignment_user_id" string="Supervisor"/>
+              <filter string="Current Academic Year" name="academic_year_search" domain="[('academic_year.current','=',True)]"/>
+          </search>
+      </field>
+  </record>
+
+  <!-- Main Form View -->
+  <record id="pt_application_form" model="ir.ui.view">
+    <field name="name">pt.place.application.form</field>
+    <field name="model">pt.place.application</field>
+    <field name="arch" type="xml">
+      <form string="PT Application">
+        <header>
+          <button name="action_submit" states="draft" string="Submit" class="oe_highlight" type="object"/>
+          <button name="action_approve" states="submitted" string="Approve" class="oe_highlight" type="object" groups="school.group_school_administration,custom_ptms.department_coordinator"/>
+          <button name="action_reject" states="submitted" string="Reject" class="oe_highlight" type="object" groups="school.group_school_administration,custom_ptms.department_coordinator"/>
+          <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,rejected,in_progress,completed"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="name" readonly="1"/>
+              <field name="date" readonly="1"/>
+              <field name="student_name" readonly="1"/>
+              <field name="registration_no" readonly="1"/>
+            </group>
+            <group>
+              <field name="academic_year" readonly="1"/>
+              <field name="division_id" readonly="1"/>
+              <field name="pt_type" readonly="1"/>
+            </group>
+          </group>
+
+          <notebook>
+            <page string="Application Details">
+              <group>
+                    <group>
+                        <field name="place_id" attrs="{'invisible': [('is_self', '=', True)]}" options='{"no_create": True,"no_open": True}'/>
+                        <field name="is_self"/>
+                        <group attrs="{'invisible': [('is_self','=',False)]}">
+                            <field name="self_company_name"/>
+                            <field name="self_company_region"/>
+                            <field name="self_company_district"/>
+                            <field name="confirmation_letter"/>
+                        </group>
+                    </group>
+                <group>
+                  <field name="region" readonly="1"/>
+                  <field name="is_assigned" groups="base.group_erp_manager"/>
+                </group>
+              </group>
+            </page>
+
+            <page string="Supervisor" attrs="{'invisible': [('is_assigned', '=', False)]}">
+              <group>
+                <field name="assignment_user_id" string="Supervisor"/>
+              </group>
+            </page>
+
+            <page string="Visiting Information" attrs="{'invisible': [('state', 'not in', ['approved','in_progress','completed'])]}" groups="school.group_school_administration,school.group_school_teacher,custom_ptms.department_coordinator">
+              <group>
+                <field name="date_visit"/>
+                <field name="arrival_note"/>
+                <field name="report_title"/>
+                <field name="comments"/>
+                <field name="remarks"/>
+              </group>
+            </page>
+
+            <page string="Final Report" attrs="{'invisible': [('state', 'not in', ['approved','in_progress','completed'])]}">
+              <group>
+                <field name="final_report"/>
+              </group>
+            </page>
+
+            <page string="Grading" attrs="{'invisible': [('state', 'not in', ['in_progress','completed'])]}" groups="school.group_school_administration,school.group_school_teacher,custom_ptms.department_coordinator">
+              <div class="oe_button_box" name="button_box">
+                <button name="action_open_assessment_sheet"
+                        string="Assess Student"
+                        type="object"
+                        class="oe_stat_button btn-primary"
+                        icon="fa-check-square-o"
+                        groups="school.group_school_administration,school.group_school_teacher,custom_ptms.department_coordinator"/>
+              </div>
+              <group>
+                <field name="officer_marks" readonly="1"/>
+                <field name="logbook_marks" readonly="1"/>
+                <field name="supervisor_marks" readonly="1"/>
+                <field name="report_marks" readonly="1"/>
+                <field name="total_marks" readonly="1"/>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+        <div class="oe_chatter">
+          <field name="message_follower_ids" widget="mail_followers"/>
+          <field name="message_ids" widget="mail_thread"/>
+        </div>
+      </form>
+    </field>
+  </record>
+
+  <!-- Tree Views -->
+  <record id="pt_application_tree" model="ir.ui.view">
+    <field name="name">pt.place.application.tree</field>
+    <field name="model">pt.place.application</field>
+    <field name="arch" type="xml">
+        <tree string="Applications">
+            <field name="name"/>
+            <field name="student_name"/>
+            <field name="student_gender"/>
+            <field name="registration_no"/>
+            <field name="place_id" string="Company"/>
+            <field name="academic_year"/>
+            <field name="division_id"/>
+            <field name="pt_type"/>
+            <field name="state"/>
+        </tree>
+    </field>
+  </record>
+
+  <record id="pt_application_tree_supervisor" model="ir.ui.view">
+    <field name="name">pt.place.application.tree.supervisor</field>
+    <field name="model">pt.place.application</field>
+    <field name="arch" type="xml">
+        <tree string="Applications">
+            <field name="name"/>
+            <field name="student_name"/>
+            <field name="registration_no"/>
+            <field name="place_id" string="Company"/>
+            <field name="assignment_user_id" string="Supervisor"/>
+            <field name="state"/>
+        </tree>
+    </field>
+  </record>
+
+  <record id="pt_application_tree_arrivalnote" model="ir.ui.view">
+    <field name="name">pt.place.application.tree.arrivalnote</field>
+    <field name="model">pt.place.application</field>
+    <field name="arch" type="xml">
+        <tree string="Applications">
+            <field name="name"/>
+            <field name="student_name"/>
+            <field name="place_id" string="Company"/>
+            <field name="arrival_note" widget="binary"/>
+        </tree>
+    </field>
+  </record>
+
+  <record id="pt_application_tree_summary" model="ir.ui.view">
+    <field name="name">pt.place.application.tree.summary</field>
+    <field name="model">pt.place.application</field>
+    <field name="arch" type="xml">
+      <tree string="Applications">
+        <field name="name"/>
+        <field name="student_name"/>
+        <field name="registration_no"/>
+        <field name="division_id"/>
+        <field name="pt_type"/>
+        <field name="officer_marks"/>
+        <field name="supervisor_marks"/>
+        <field name="logbook_marks"/>
+        <field name="report_marks"/>
+        <field name="total_marks"/>
+      </tree>
+    </field>
+  </record>
+
+  <!-- Actions -->
+  <record id="action_pt_application" model="ir.actions.act_window">
+    <field name="name">PT Applications</field>
+    <field name="res_model">pt.place.application</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="pt_application_tree"/>
+    <field name="search_view_id" ref="pt_application_search_view"/>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Create your first PT Application</p>
+    </field>
+  </record>
+
+  <record id="action_pt_application_submitted" model="ir.actions.act_window">
+    <field name="name">Submitted Applications</field>
+    <field name="res_model">pt.place.application</field>
+    <field name="domain">[('state','=','submitted')]</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="pt_application_tree"/>
+    <field name="search_view_id" ref="pt_application_search_view"/>
+  </record>
+
+  <record id="action_pt_application_approved" model="ir.actions.act_window">
+    <field name="name">Approved Applications</field>
+    <field name="res_model">pt.place.application</field>
+    <field name="domain">[('state','=','approved')]</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="pt_application_tree"/>
+    <field name="search_view_id" ref="pt_application_search_view"/>
+  </record>
+
+  <record id="action_pt_application_arrivalnote" model="ir.actions.act_window">
+    <field name="name">Arrival Notes</field>
+    <field name="res_model">pt.place.application</field>
+    <field name="domain">[('state','in',['approved','in_progress','completed']),('arrival_note','!=',False)]</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="pt_application_tree_arrivalnote"/>
+    <field name="search_view_id" ref="pt_application_search_view"/>
+  </record>
+
+  <record id="action_pt_application_summary" model="ir.actions.act_window">
+    <field name="name">PT Summary</field>
+    <field name="res_model">pt.place.application</field>
+    <field name="domain">[('state','in',['in_progress','completed'])]</field>
+    <field name="view_mode">tree</field>
+    <field name="view_id" ref="pt_application_tree_summary"/>
+    <field name="search_view_id" ref="pt_application_search_view"/>
+  </record>
+
+      <record model="ir.actions.server" id="action_apply_pt_self">
+      <field name="name">Submit Your Application</field>
+      <field name="model_id" ref="model_pt_place_application"/>
+      <field name="state">code</field>
+      <field name="code">
+action = env.ref('custom_ptms.action_pt_application').read()[0]
+action['view_mode'] = 'form'
+action['views'] = [(False, 'form')]
+action['context'] = {'default_is_self': True}
+      </field>
+  </record>
+
+  <record model="ir.actions.server" id="action_apply_pt_self">
+    <field name="name">Submit Your Application</field>
+    <field name="model_id" ref="model_pt_place_application"/>
+    <field name="state">code</field>
+    <field name="code">
+      action = env.ref('custom_ptms.action_pt_application').read()[0]
+      action['view_mode'] = 'form'
+      action['views'] = [(False, 'form')]
+      action['context'] = {'default_is_self':True}
+    </field>
+  </record>
+
+  <!-- Menu Items -->
+  <menuitem id="menu_pt_application_root" name="PT Allocation" parent="menu_student" sequence="2" groups="school.group_school_student"/>
+  <menuitem id="menu_pt_application_system" name="From System" parent="menu_pt_application_root" action="action_apply_pt_system" sequence="1" groups="school.group_school_student"/>
+  <menuitem id="menu_pt_application_self" name="Submit your Own" parent="menu_pt_application_root" action="action_apply_pt_self" sequence="2" groups="school.group_school_student"/>
+  <menuitem id="menu_pt_application_view" name="My Applications" parent="menu_pt_application_root" action="action_pt_application" sequence="3" groups="school.group_school_student"/>
+
+  <!-- Coordinator Menus -->
+  <menuitem id="menu_pt_coordinator_root" name="PT Allocation" parent="menu_coordinator" sequence="1" groups="school.group_school_administration,custom_ptms.department_coordinator"/>
+  <menuitem id="menu_pt_coordinator_all" name="All Applications" parent="menu_pt_coordinator_root" action="action_pt_application" sequence="1" groups="school.group_school_administration,custom_ptms.department_coordinator"/>
+  <menuitem id="menu_pt_coordinator_submitted" name="Waiting Approval" parent="menu_pt_coordinator_root" action="action_pt_application_submitted" sequence="2" groups="school.group_school_administration,custom_ptms.department_coordinator"/>
+  <menuitem id="menu_pt_coordinator_approved" name="Approved" parent="menu_pt_coordinator_root" action="action_pt_application_approved" sequence="3" groups="school.group_school_administration,custom_ptms.department_coordinator"/>
+  <menuitem id="menu_pt_coordinator_arrivalnote" name="Arrival Notes" parent="menu_pt_coordinator_root" action="action_pt_application_arrivalnote" sequence="4" groups="school.group_school_administration,custom_ptms.department_coordinator"/>
+  <menuitem id="menu_pt_coordinator_summary" name="Summary" parent="menu_pt_coordinator_root" action="action_pt_application_summary" sequence="5" groups="school.group_school_administration,custom_ptms.department_coordinator"/>
+
+  <!-- Teacher Menus -->
+  <menuitem id="menu_pt_teacher_approved" name="Assigned Students" parent="menu_teacher" action="action_pt_application_approved" sequence="1" groups="school.group_school_teacher,school.group_school_administration,custom_ptms.department_coordinator"/>
+  <menuitem id="menu_pt_teacher_arrivalnote" name="Arrival Notes" parent="menu_teacher" action="action_pt_application_arrivalnote" sequence="2" groups="school.group_school_teacher,school.group_school_administration,custom_ptms.department_coordinator"/>
+  <menuitem id="menu_pt_teacher_summary" name="Summary" parent="menu_teacher" action="action_pt_application_summary" sequence="3" groups="school.group_school_teacher,school.group_school_administration,custom_ptms.department_coordinator"/>
+</odoo>

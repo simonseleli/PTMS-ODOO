@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="changing_names_students" forcecreate='True' model="ir.cron">
+            <field name="name">Changing Student Names</field>
+            <field eval="True" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="model_id" ref="model_student_student"/>
+            <field name="state">code</field>
+            <field name="code">model._rectify_draft_name()</field>
+        </record>
+        <record id="mark_pt_application_status" forcecreate='True' model="ir.cron">
+            <field name="name">Change PT Application Status</field>
+            <field eval="True" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="model_id" ref="model_pt_place_application"/>
+            <field name="state">code</field>
+            <field name="code">model._mark_pt_status()</field>
+        </record>
+        <record id="mark_vacancy_status" forcecreate='True' model="ir.cron">
+            <field name="name">Change Vacancy Status</field>
+            <field eval="True" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="model_id" ref="model_pt_company_vacancy"/>
+            <field name="state">code</field>
+            <field name="code">model._mark_vacancy_status()</field>
+        </record>
+        <record id="mark_assignment_status" forcecreate='True' model="ir.cron">
+            <field name="name">Change Assignment Status</field>
+            <field eval="True" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="model_id" ref="model_pt_supervisor_assignment"/>
+            <field name="state">code</field>
+            <field name="code">model._mark_assignment_status()</field>
+        </record>
+    </data>
+</odoo>
+
+
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<odoo>-->
+<!--    <data>-->
+<!--        <record id="changing_names_students" forcecreate='True' model="ir.cron">-->
+<!--            <field name="name">Changing Student Names</field>-->
+<!--            <field eval="True" name="active"/>-->
+<!--            <field name="user_id" ref="base.user_root"/>-->
+<!--            <field name="interval_number">1</field>-->
+<!--            <field name="interval_type">minutes</field>-->
+<!--            <field name="numbercall">-1</field>-->
+<!--            <field name="model_id" ref="model_student_student"/>-->
+<!--            <field name="state">code</field>-->
+<!--            <field name="code">model._rectify_draft_name()</field>-->
+<!--        </record>-->
+<!--        <record id="mark_pt_application_status" forcecreate='True' model="ir.cron">-->
+<!--            <field name="name">Change PT Application Status</field>-->
+<!--            <field eval="True" name="active"/>-->
+<!--            <field name="user_id" ref="base.user_root"/>-->
+<!--            <field name="interval_number">1</field>-->
+<!--            <field name="interval_type">minutes</field>-->
+<!--            <field name="numbercall">-1</field>-->
+<!--            <field name="model_id" ref="model_pt_place_application"/>-->
+<!--            <field name="state">code</field>-->
+<!--            <field name="code">model._mark_pt_status()</field>-->
+<!--        </record>-->
+<!--        <record id="mark_vacancy_status" forcecreate='True' model="ir.cron">-->
+<!--            <field name="name">Change Vacancy Status</field>-->
+<!--            <field eval="True" name="active"/>-->
+<!--            <field name="user_id" ref="base.user_root"/>-->
+<!--            <field name="interval_number">1</field>-->
+<!--            <field name="interval_type">minutes</field>-->
+<!--            <field name="numbercall">-1</field>-->
+<!--            <field name="model_id" ref="model_pt_company_vacancy"/>-->
+<!--            <field name="state">code</field>-->
+<!--            <field name="code">model._mark_vacancy_status()</field>-->
+<!--        </record>-->
+<!--        <record id="mark_assignment_status" forcecreate='True' model="ir.cron">-->
+<!--            <field name="name">Change Assignment Status</field>-->
+<!--            <field eval="True" name="active"/>-->
+<!--            <field name="user_id" ref="base.user_root"/>-->
+<!--            <field name="interval_number">1</field>-->
+<!--            <field name="interval_type">minutes</field>-->
+<!--            <field name="numbercall">-1</field>-->
+<!--            <field name="model_id" ref="model_pt_supervisor_assignment"/>-->
+<!--            <field name="state">code</field>-->
+<!--            <field name="code">model._mark_assignment_status()</field>-->
+<!--        </record>-->
+<!--    </data>-->
+<!--</odoo>-->
